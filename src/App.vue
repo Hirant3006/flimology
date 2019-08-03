@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <movie-tag msg="Welcome to Your Vue.js App"/>
+    <movie-tag movieid="550"/>
   </div>
 </template>
 
 <script>
-import MovieTag from './components/MovieTag.vue'
+import MovieTag from './components/MovieTagOld.vue'
 
 export default {
   name: 'app',
