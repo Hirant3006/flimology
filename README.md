@@ -1,4 +1,4 @@
-# flimologyrework
+# flimology
 
 ## Project setup
 ```
