@@ -18,11 +18,13 @@
 
         <hr />
         <span>Đạo diễn:{{director[0].name}}</span>
-        <span >
+        <span>
           Diễn viên:
-          <span v-for="num in 3" :key="num">{{credits.cast[num-1].name}} 
-            <span v-if="num!==3">, </span>
-            <span v-else>.</span></span>
+          <span v-for="num in 3" :key="num">
+            {{credits.cast[num-1].name}}
+            <span v-if="num!==3">,</span>
+            <span v-else>.</span>
+          </span>
         </span>
         <!-- <div class="flim-chanel">
           <a style="background-color: #D20000;margin-right: 10px;">Netflix</a>
@@ -44,6 +46,8 @@
 
 <script>
 import movieapi from "../../plugins/movieapi/";
+import RepositoryFactory from "../../plugins/movieapinew/repositoryFactory";
+const MovieRepository = RepositoryFactory.get("movies");
 
 export default {
   name: "MovieTag",
@@ -57,19 +61,24 @@ export default {
   props: {
     movieid: String
   },
-  mounted() {
-    movieapi.movie.detail(this.movieid).then(respone => {
-      if (respone.status == 200) {
-        // console.log(respone.data);
-        this.movie = respone.data;
-      }
-    });
-    movieapi.movie.credits(this.movieid).then(respone => {
-      if (respone.status == 200) {
-        // console.log(respone.data)
-        this.credits = respone.data;
-      }
-    });
+  async mounted() {
+    // movieapi.movie.detail(this.movieid).then(respone => {
+    //   if (respone.status == 200) {
+    //     // console.log(respone.data);
+    //     this.movie = respone.data;
+    //   }
+    // });
+    let movie = await MovieRepository.getDetail(this.movieid),
+    credits= await MovieRepository.getCredit(this.movieid)
+    this.movie=movie.data;
+    this.credits=credits.data;
+    
+    // movieapi.movie.credits(this.movieid).then(respone => {
+    //   if (respone.status == 200) {
+    //     // console.log(respone.data)
+    //     this.credits = respone.data;
+    //   }
+    // });
   },
   watch: {
     async movie() {
@@ -79,11 +88,11 @@ export default {
   },
   computed: {
     director() {
-      if (this.credits!==null) {
-      return this.credits.crew.filter(item => item.job == "Director")
+      if (this.credits !== null) {
+        return this.credits.crew.filter(item => item.job == "Director");
       }
-      return []
-    } 
+      return [];
+    }
   }
 };
 </script>
