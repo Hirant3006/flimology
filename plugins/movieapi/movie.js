@@ -10,4 +10,9 @@ export default {
       apiweb + "/3/movie/"+movieid+"?api_key=" + apikey + "&language=en-US"
     );
   },
+  credits: movieid => {
+    return axios.get(
+      apiweb + "/3/movie/"+movieid+"/credits?api_key=" + apikey 
+    )
+  }
 };

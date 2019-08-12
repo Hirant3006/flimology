@@ -3,19 +3,27 @@
     <div class="flim">
       <div class="flim-poster">
         <img class="poster" alt="poster" :src="image" />
-        <span class="trailer-button">Watch trailer</span>
+        <span class="trailer-button">Xem trailer</span>
       </div>
-      <div class="flim-detail">
+      <div v-if="credits!==null" class="flim-detail">
         <b>{{movie.title}}</b>
         <span>({{movie.release_date}})</span>
         <div style="margin-bottom:5px">
-        <span v-for="(genres,index) in movie.genres" :key="genres">{{genres.name}} <span v-if="index!==movie.genres.length">, </span></span>
+          <span v-for="(genres,index) in movie.genres" :key="index">
+            {{genres.name}}
+            <span v-if="index!==movie.genres.length-1">, &nbsp;</span>
+          </span>
         </div>
         <span>{{movie.overview}}</span>
 
         <hr />
-        <span>Director: Quentin Tarantino</span>
-        <span>Cast: Tim Roth,Amanda Plummer,Laura Lovelace,John Travolta</span>
+        <span>Đạo diễn:{{director[0].name}}</span>
+        <span >
+          Diễn viên:
+          <span v-for="num in 3" :key="num">{{credits.cast[num-1].name}} 
+            <span v-if="num!==3">, </span>
+            <span v-else>.</span></span>
+        </span>
         <!-- <div class="flim-chanel">
           <a style="background-color: #D20000;margin-right: 10px;">Netflix</a>
           <a style="background-color: green;margin-right: 10px;">AmazonVideo</a>
@@ -23,7 +31,7 @@
         </div>-->
         <a>Share</a>
       </div>
-      <div class="flim-chart">89</div>
+      <!-- <div class="flim-chart">89</div> -->
     </div>
     <!-- <div class="flim-tool">
       <a>one</a>
@@ -42,7 +50,8 @@ export default {
   data() {
     return {
       movie: null,
-      image: null
+      image: null,
+      credits: null
     };
   },
   props: {
@@ -50,9 +59,15 @@ export default {
   },
   mounted() {
     movieapi.movie.detail(this.movieid).then(respone => {
-      if (respone.status==200) {
-        console.log(respone.data);
+      if (respone.status == 200) {
+        // console.log(respone.data);
         this.movie = respone.data;
+      }
+    });
+    movieapi.movie.credits(this.movieid).then(respone => {
+      if (respone.status == 200) {
+        // console.log(respone.data)
+        this.credits = respone.data;
       }
     });
   },
@@ -61,6 +76,14 @@ export default {
       const image = await movieapi.image("original", this.movie.poster_path);
       this.image = image;
     }
+  },
+  computed: {
+    director() {
+      if (this.credits!==null) {
+      return this.credits.crew.filter(item => item.job == "Director")
+      }
+      return []
+    } 
   }
 };
 </script>
@@ -74,7 +97,7 @@ img.poster {
 
 .flim-container {
   margin: auto;
-  border: 0.5px solid black;
+  border: 1px solid black;
   border-radius: 4px;
   width: 50vw;
   padding: 1.5vmax;
@@ -106,7 +129,7 @@ img.poster {
   display: flex;
   flex-direction: column;
   text-align: left;
-  width: 50%;
+  width: 75%;
   /* float: left; */
   /* width: 330px; */
   /* width: 45%;
