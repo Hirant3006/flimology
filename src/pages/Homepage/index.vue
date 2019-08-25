@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <home-page/>
+    <input type="text">
+    <movie-tag movieid="550" />
   </div>
 </template>
 
 <script>
-import HomePage from "./pages/Homepage";
+import MovieTag from "../../components/MovieTag";
 
 export default {
   name: "app",
   components: {
-    HomePage
+    MovieTag
   }
 };
 </script>
