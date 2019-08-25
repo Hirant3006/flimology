@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <input type="text">
+    <input  type="text">
     <movie-tag movieid="550" />
   </div>
 </template>

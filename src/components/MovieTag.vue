@@ -71,14 +71,14 @@ export default {
     let movie = await MovieRepository.getDetail(this.movieid),
     credits= await MovieRepository.getCredit(this.movieid)
     this.movie=movie.data;
-    this.credits=credits.data;
-    
-    // movieapi.movie.credits(this.movieid).then(respone => {
-    //   if (respone.status == 200) {
-    //     // console.log(respone.data)
-    //     this.credits = respone.data;
-    //   }
-    // });
+      this.credits=credits.data;
+      
+      // movieapi.movie.credits(this.movieid).then(respone => {
+      //   if (respone.status == 200) {
+      //     // console.log(respone.data)
+      //     this.credits = respone.data;
+      //   }
+      // });
   },
   watch: {
     async movie() {
